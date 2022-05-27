@@ -1,9 +1,17 @@
-import json
-import random
+"""
+This file contains functions and constants required to generate images suitable for a mock NFT project.
+
+@author: Zack West <alphazwest@gmail.com>
+@version: 1.0.0
+@date: 5/27/2022
+"""
 
 from PIL import Image, ImageDraw, ImageColor, ImageFont
 import os
 import shutil
+import json
+import random
+import time
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 
@@ -12,9 +20,13 @@ TOTAL_IMAGES = 1000
 COUNT = 256
 SIZE = (1024, 1024)
 EXT = '.jpg'
+FONT_SIZE = 512
+OUTPUT_DIR = os.path.abspath(os.path.join(HERE, 'output'))
 FONT = os.path.abspath(os.path.join(HERE, 'fonts', 'Volkhov-Bold.ttf'))
-FONT_SIZE = 256
-OUTPUT_DIR = os.path.abspath(os.path.join(HERE, 'images'))
+
+# Creates output directory if not existing
+if not(os.path.exists(OUTPUT_DIR)):
+    os.mkdir(os.path.abspath(OUTPUT_DIR))
 
 # Color pallets w/weighted distributions (for rarity simulation)
 _DARKS = {"171212": 5, "002500": 4, "083b49": 3, "3d2b00": 2, "3c011d": 1}
@@ -134,7 +146,9 @@ def save_output(image_name: str, image: Image, meta: MetaData):
 
 def check_letter_distribution():
     """
-    Checks that the letter distribute properly
+    Un unused utility function that creates a million-character
+    distribution of letters based on their weighted values.
+    todo why don't the weights need to be sorted?
     """
     total = 1000000
     counts = {}
@@ -160,9 +174,7 @@ def generate_images():
 
 
 if __name__ == '__main__':
-    # generate_images()
-    print(check_letter_distribution())
-
-
-
-
+    print(f"Generating {TOTAL_IMAGES} images")
+    st = time.time()
+    generate_images()
+    print(f"{TOTAL_IMAGES} images generated in {time.time() - st} seconds.")
